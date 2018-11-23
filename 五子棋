@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace WindowsFormsApplication11
+{
+    public partial class Form1 : Form
+    {
+        int[] xys = { 12,15,17,19,30,20,28};//一个数组存放长宽//30,20是左上留白//28是宽度
+        Color[] clrBtn = { Color.AliceBlue, Color.Aqua,Color.Aquamarine,Color.BlanchedAlmond };//定义了两种颜色
+        int idClk = 0;//有效点击序号
+        String[] strBtn =  { "*", "**","***","****" };//定义了在button上显示的文本
+        List<Button> lstBtn=new List<Button>();//button列表
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ContextMenuStrip = contextMenuStrip1;//右键菜单
+            easyToolStripMenuItem.CheckOnClick = true;//点击改变check状态
+            diffToolStripMenuItem.CheckOnClick = true;//点击改变check状态
+        }
+
+        private void easyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            diffToolStripMenuItem.Checked = false;
+            (sender as ToolStripMenuItem).Checked = true;
+        }
+
+        private void diffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            easyToolStripMenuItem.Checked = false;
+            (sender as ToolStripMenuItem).Checked = true;
+        }
+
+        private void gameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Button btnAny in lstBtn) btnAny.Dispose();//对lstBtn进行迭代销毁
+            lstBtn.Clear();//第一次为空，不执行；第二次开始进行对Button集的清除
+            int idxys = easyToolStripMenuItem.Checked ? 0 : 2;//判断easy是否被选中，选中为0（0，2是数组下标起点）
+            for(int i=0;i<xys[idxys];++i)
+                for (int j = 0; j < xys[idxys + 1]; ++j)
+                {
+                    Button btn = new Button();
+                    btn.Left = xys[4] + xys[6] * j;
+                    btn.Top = xys[5] + xys[6] * i;
+                    btn.Width = btn.Height=xys[6];
+                    btn.Click += new EventHandler(btn_Click);//输入btn.click后，+=后，按两次tab即可
+                    btn.Parent = this;
+                    lstBtn.Add(btn);
+                }
+            Width = lstBtn[lstBtn.Count - 1].Left + lstBtn[lstBtn.Count - 1].Width+xys[4];//加宽
+            Height = lstBtn[lstBtn.Count - 1].Top + lstBtn[lstBtn.Count - 1].Height+ 2*xys[5];//加高
+        }
+
+        void btn_Click(object sender, EventArgs e)
+        { 
+            Button btnSend=sender as Button;
+           if(btnSend.Text=="")
+           {
+               btnSend.Text = strBtn[idClk % strBtn.Count<String>()];//strBtn.Count<String>()泛型编程，把类型传进去
+                btnSend.BackColor = clrBtn[idClk % strBtn.Count<String>()];//背景色
+                ++idClk;
+           }
+        }
+    }
+}
