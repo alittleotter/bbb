@@ -1,0 +1,93 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+
+//新建数据库连接1 create table tab2(id int,dat2 datetime,dat3 datetime,age int)
+//新建数据库连接2 create table tab3(inTime datetime,datBirth datetime,datDeath datetime,age int)
+namespace 日期控件和MENU控件
+{
+
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Web;
+//using System.Web.UI;
+//using System.Web.UI.WebControls;
+//using System.Data.SqlClient;
+
+//namespace WebApplication18
+//{
+//    public partial class WebForm1 : System.Web.UI.Page
+//    {
+//        protected void Page_Load(object sender, EventArgs e)
+//        {
+//            TextBox2.AutoPostBack=true;
+//        }
+//        int id = 0;
+//        protected void Button1_Click(object sender, EventArgs e)
+//        {
+//            SqlConnection cn = new SqlConnection("data source=.\\sqlexpress;initial catalog=tempdb;trusted_connection=true");
+//            SqlCommand cmd = new SqlCommand("insert into tab10 values("+id+",'"+Calendar1.SelectedDate+"','"+Calendar2.SelectedDate+"',"+(Calendar2.SelectedDate.Year-Calendar1.SelectedDate.Year+1)+")",cn);
+//            cn.Open();
+//            cmd.ExecuteNonQuery();
+//            cn.Close();
+//        }
+
+//        protected void TextBox2_TextChanged(object sender, EventArgs e)
+//        {
+//            Calendar1.VisibleDate=Convert.ToDateTime((sender as TextBox).Text+"-6-6");
+//        }
+
+//        protected void Menu1_MenuItemClick(object sender, MenuEventArgs e)
+//        {
+//            switch(e.Item.Value)
+//            {
+//                case"帮助":Response.Redirect("");
+//                    break;
+//                case"关于":Response.Redirect("");
+//                    break;
+//            }
+//        }
+//    }
+//}
+        //
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            TextBox1.AutoPostBack = true;
+            TextBox2.AutoPostBack = true;
+        }
+
+        protected void Menu1_MenuItemClick(object sender, MenuEventArgs e)
+        {
+            switch (e.Item.Value)
+            {
+                case "插入": 
+                {
+                    SqlConnection cn = new SqlConnection("data source=.\\sqlexpress;initial catalog=tempdb;trusted_connection=true");
+                    SqlCommand cmd = new SqlCommand("insert into t1 values('"+DateTime.Now+"',"+(Calendar1.SelectedDate==DateTime.MinValue?"null":"'"+Calendar1.SelectedDate.ToString("yyyy-MM-dd")+"'")+",'"+Calendar2.SelectedDate.ToString("yyyy-MM-dd")+"',"+(Calendar2.SelectedDate.Year-Calendar1.SelectedDate.Year+1)+")" , cn);
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                    cn.Close();
+                    //calendar用户不选，默认0001-01-01}
+                }
+                break;
+            } 
+        }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            Calendar1.VisibleDate = Convert.ToDateTime((sender as TextBox).Text + "-6-6");
+        }
+
+        protected void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+            Calendar2.VisibleDate = Convert.ToDateTime((sender as TextBox).Text + "-6-6");
+        }
+    }
+}
